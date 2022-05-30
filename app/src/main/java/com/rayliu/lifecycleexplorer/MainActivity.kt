@@ -6,10 +6,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import com.rayliu.lifecycleexplorer.cards.CardFragmentFactory
 import com.rayliu.lifecycleexplorer.cards.CardsFragment
+import com.rayliu.lifecycleexplorer.cards.FragmentLifecycleCallback
 import com.rayliu.lifecycleexplorer.databinding.ActivityMainBinding
 import com.rayliu.lifecycleexplorer.utils.CardGenerators
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycleCallback {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
         setSupportActionBar(binding.mainAppBarToolbar)
 
-        supportFragmentManager.fragmentFactory = CardFragmentFactory()
+        supportFragmentManager.fragmentFactory = CardFragmentFactory(this)
         binding.mainFragmentReplaceButton.setOnClickListener(this)
     }
 
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         ft.replace(
             R.id.main_fragment_container_view, CardsFragment::class.java,
             bundleOf(
-                "title" to "Hello $id",
+                "title" to id,
                 "colorRes" to CardGenerators.generateRandomColorRes()
             )
         )
@@ -55,4 +56,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
         return super.onNavigateUp()
     }
+
+    private fun printLog(id: String, message: String) {
+        val messageTextView = binding.mainResponseTextview
+        val currentLogMessage = messageTextView.text.toString()
+        if (currentLogMessage.isEmpty()) {
+            messageTextView.text = id + ": " + message
+        } else {
+            messageTextView.text = currentLogMessage + "\n" + id + ": " + message
+        }
+    }
+
+    //region FragmentLifecycleCallback
+    override fun onFragmentEventCallback(id: String, message: String) {
+        printLog(id, message)
+    }
+    //endregion
 }

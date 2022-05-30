@@ -37,7 +37,7 @@ object CardGenerators {
             return null
         }
 
-        return "Fragment ID: ${alphabet[index]}"
+        return "Fragment ${alphabet[index]}"
     }
 
     @ColorRes
