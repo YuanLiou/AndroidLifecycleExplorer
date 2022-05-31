@@ -82,7 +82,7 @@ class CardsFragment(
 
     override fun onStop() {
         super.onStop()
-        callback?.onFragmentEventCallback(cardId, "onPause()")
+        callback?.onFragmentEventCallback(cardId, "onStop()")
     }
 
     override fun onDestroyView() {
