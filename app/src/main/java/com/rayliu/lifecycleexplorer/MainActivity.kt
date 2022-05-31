@@ -12,7 +12,9 @@ import com.rayliu.lifecycleexplorer.utils.CardGenerators
 
 class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycleCallback {
 
-    private lateinit var binding: ActivityMainBinding
+    private var _binding: ActivityMainBinding? = null
+    private val binding: ActivityMainBinding
+        get() = _binding!!
 
     private var currentIndex = 0
     private var previousId: String? = null
@@ -20,15 +22,33 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.mainAppBarToolbar)
 
         supportFragmentManager.fragmentFactory = CardFragmentFactory(this)
+
         binding.mainFragmentReplaceButton.setOnClickListener(this)
+        binding.mainFragmentCleanButton.setOnClickListener(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
     override fun onClick(view: View) {
+        when (view.id) {
+            R.id.main_fragment_replace_button -> {
+                populateNewCards()
+            }
+            R.id.main_fragment_clean_button -> {
+                cleanLogTexts()
+            }
+        }
+    }
+
+    private fun populateNewCards() {
         val id = CardGenerators.generateFragmentTag(currentIndex++)
         if (id == null) {
             return
@@ -46,6 +66,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycl
         ft.commit()
 
         previousId = id
+    }
+
+    private fun cleanLogTexts() {
+        binding.mainResponseTextview.text = ""
     }
 
     override fun onNavigateUp(): Boolean {
