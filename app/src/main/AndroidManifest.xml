@@ -29,6 +29,10 @@
             android:name=".demoviewpager.ViewPagerActivity"
             android:exported="false"
             android:label="ViewPager Fragment Lifecycle" />
+        <activity
+            android:name=".demoviewpager2.ViewPager2Activity"
+            android:exported="false"
+            android:label="ViewPager2 Fragment Lifecycle" />
     </application>
 
 </manifest>

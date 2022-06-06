@@ -8,6 +8,7 @@ import com.google.android.material.navigation.NavigationView
 import com.rayliu.lifecycleexplorer.MainActivity
 import com.rayliu.lifecycleexplorer.R
 import com.rayliu.lifecycleexplorer.demoviewpager.ViewPagerActivity
+import com.rayliu.lifecycleexplorer.demoviewpager2.ViewPager2Activity
 
 class DrawerRouter(
     private val currentActivity: Activity
@@ -28,6 +29,11 @@ class DrawerRouter(
                     }
                     R.id.action_viewpager_lifecycle -> {
                         val intent = Intent(currentActivity, ViewPagerActivity::class.java)
+                        currentActivity.startActivity(intent)
+                        return true
+                    }
+                    R.id.action_viewpager2_lifecycle -> {
+                        val intent = Intent(currentActivity, ViewPager2Activity::class.java)
                         currentActivity.startActivity(intent)
                         return true
                     }

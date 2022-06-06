@@ -10,4 +10,8 @@
         android:id="@+id/action_viewpager_lifecycle"
         android:title="ViewPager" />
 
+    <item
+        android:id="@+id/action_viewpager2_lifecycle"
+        android:title="ViewPager2" />
+
 </menu>
