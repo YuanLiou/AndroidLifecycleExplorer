@@ -16,6 +16,7 @@ import com.rayliu.lifecycleexplorer.databinding.ActivityViewpager2Binding
 import com.rayliu.lifecycleexplorer.utils.CardGenerators
 import com.rayliu.lifecycleexplorer.utils.DrawerRouter
 import com.rayliu.lifecycleexplorer.utils.printLogs
+import com.rayliu.lifecycleexplorer.utils.syncMenuWithToolbar
 
 class ViewPager2Activity : AppCompatActivity(), View.OnClickListener, FragmentLifecycleCallback {
 
@@ -33,6 +34,7 @@ class ViewPager2Activity : AppCompatActivity(), View.OnClickListener, FragmentLi
         setContentView(binding.root)
 
         setSupportActionBar(binding.viewpager2AppBarToolbar)
+        syncMenuWithToolbar()
         setupNavigationMenu()
         binding.viewpager2CleanUp.setOnClickListener(this)
 
@@ -41,6 +43,16 @@ class ViewPager2Activity : AppCompatActivity(), View.OnClickListener, FragmentLi
         binding.viewpager2ContainerView.doOnLayout {
             setupViewPager()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
+
+    private fun syncMenuWithToolbar() {
+        binding.viewpager2DrawerLayout.syncMenuWithToolbar(this, binding.viewpager2AppBarToolbar)
     }
 
     private fun setupNavigationMenu() {
