@@ -2,6 +2,7 @@ package com.rayliu.lifecycleexplorer
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import com.rayliu.lifecycleexplorer.cards.CardFragmentFactory
@@ -12,6 +13,7 @@ import com.rayliu.lifecycleexplorer.databinding.ActivityMainBinding
 import com.rayliu.lifecycleexplorer.utils.CardGenerators
 import com.rayliu.lifecycleexplorer.utils.DrawerRouter
 import com.rayliu.lifecycleexplorer.utils.printLogs
+import com.rayliu.lifecycleexplorer.utils.syncMenuWithToolbar
 
 class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycleCallback {
 
@@ -32,12 +34,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycl
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.mainAppBarToolbar)
+        syncMenuWithToolbar()
 
         supportFragmentManager.fragmentFactory = CardFragmentFactory(this)
 
         binding.mainFragmentReplaceButton.setOnClickListener(this)
         binding.mainFragmentCleanButton.setOnClickListener(this)
         setupNavigationMenu()
+    }
+
+    private fun syncMenuWithToolbar() {
+        binding.mainDrawerLayout.syncMenuWithToolbar(this, binding.mainAppBarToolbar)
     }
 
     private fun setupNavigationMenu() {

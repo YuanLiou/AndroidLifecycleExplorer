@@ -13,6 +13,7 @@ import com.rayliu.lifecycleexplorer.databinding.ActivityViewpagerBinding
 import com.rayliu.lifecycleexplorer.utils.CardGenerators
 import com.rayliu.lifecycleexplorer.utils.DrawerRouter
 import com.rayliu.lifecycleexplorer.utils.printLogs
+import com.rayliu.lifecycleexplorer.utils.syncMenuWithToolbar
 
 class ViewPagerActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycleCallback {
 
@@ -30,12 +31,17 @@ class ViewPagerActivity : AppCompatActivity(), View.OnClickListener, FragmentLif
         setContentView(binding.root)
 
         setSupportActionBar(binding.viewpagerAppBarToolbar)
+        syncMenuWithToolbar()
         setupNavigationMenu()
         setupViewPager()
 
         cleanUpText()
 
         binding.viewpagerCleanUp.setOnClickListener(this)
+    }
+
+    private fun syncMenuWithToolbar() {
+        binding.viewpagerDrawerLayout.syncMenuWithToolbar(this, binding.viewpagerAppBarToolbar)
     }
 
     private fun setupNavigationMenu() {
