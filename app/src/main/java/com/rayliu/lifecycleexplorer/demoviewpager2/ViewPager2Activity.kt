@@ -45,6 +45,12 @@ class ViewPager2Activity : AppCompatActivity(), View.OnClickListener, FragmentLi
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
+
     private fun syncMenuWithToolbar() {
         binding.viewpager2DrawerLayout.syncMenuWithToolbar(this, binding.viewpager2AppBarToolbar)
     }
