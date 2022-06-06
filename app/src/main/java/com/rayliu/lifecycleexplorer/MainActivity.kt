@@ -11,6 +11,7 @@ import com.rayliu.lifecycleexplorer.cards.FragmentLifecycleCallback
 import com.rayliu.lifecycleexplorer.databinding.ActivityMainBinding
 import com.rayliu.lifecycleexplorer.utils.CardGenerators
 import com.rayliu.lifecycleexplorer.utils.DrawerRouter
+import com.rayliu.lifecycleexplorer.utils.printLogs
 
 class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycleCallback {
 
@@ -93,13 +94,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycl
     }
 
     private fun printLog(id: String, message: String) {
-        val messageTextView = binding.mainResponseTextview
-        val currentLogMessage = messageTextView.text.toString()
-        if (currentLogMessage.isEmpty()) {
-            messageTextView.text = id + ": " + message
-        } else {
-            messageTextView.text = currentLogMessage + "\n" + id + ": " + message
-        }
+        binding.mainResponseTextview.printLogs(id, message)
     }
 
     //region FragmentLifecycleCallback
