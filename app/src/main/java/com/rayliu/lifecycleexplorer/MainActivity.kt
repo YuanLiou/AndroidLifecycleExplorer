@@ -1,14 +1,12 @@
 package com.rayliu.lifecycleexplorer
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
-import com.google.android.material.navigation.NavigationView
 import com.rayliu.lifecycleexplorer.cards.CardFragmentFactory
 import com.rayliu.lifecycleexplorer.cards.CardsFragment
+import com.rayliu.lifecycleexplorer.cards.CardsFragment.Companion.COLOR_KEY
 import com.rayliu.lifecycleexplorer.cards.FragmentLifecycleCallback
 import com.rayliu.lifecycleexplorer.databinding.ActivityMainBinding
 import com.rayliu.lifecycleexplorer.utils.CardGenerators
@@ -42,7 +40,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycl
     }
 
     private fun setupNavigationMenu() {
-        router.attachToDefaultRoute(binding.mainPageNavigation)
+        router.attachToDefaultRoute(binding.mainPageNavigation, R.id.action_fragment_lifecycle)
     }
 
     override fun onDestroy() {
@@ -71,8 +69,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycl
         ft.replace(
             R.id.main_fragment_container_view, CardsFragment::class.java,
             bundleOf(
-                "title" to id,
-                "colorRes" to CardGenerators.generateRandomColorRes()
+                CardsFragment.TITLE_KEY to id,
+                CardsFragment.COLOR_KEY to CardGenerators.generateRandomColorRes()
             )
         )
         previousId?.let { ft.addToBackStack(it) }

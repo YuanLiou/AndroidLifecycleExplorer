@@ -6,4 +6,8 @@
         android:id="@+id/action_fragment_lifecycle"
         android:title="Fragment lifecycle" />
 
+    <item
+        android:id="@+id/action_viewpager_lifecycle"
+        android:title="ViewPager" />
+
 </menu>
