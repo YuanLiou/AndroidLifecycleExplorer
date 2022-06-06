@@ -1,16 +1,24 @@
 package com.rayliu.lifecycleexplorer
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
+import com.google.android.material.navigation.NavigationView
 import com.rayliu.lifecycleexplorer.cards.CardFragmentFactory
 import com.rayliu.lifecycleexplorer.cards.CardsFragment
 import com.rayliu.lifecycleexplorer.cards.FragmentLifecycleCallback
 import com.rayliu.lifecycleexplorer.databinding.ActivityMainBinding
 import com.rayliu.lifecycleexplorer.utils.CardGenerators
+import com.rayliu.lifecycleexplorer.utils.DrawerRouter
 
 class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycleCallback {
+
+    private val router: DrawerRouter by lazy(LazyThreadSafetyMode.NONE) {
+        DrawerRouter(this)
+    }
 
     private var _binding: ActivityMainBinding? = null
     private val binding: ActivityMainBinding
@@ -30,6 +38,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycl
 
         binding.mainFragmentReplaceButton.setOnClickListener(this)
         binding.mainFragmentCleanButton.setOnClickListener(this)
+        setupNavigationMenu()
+    }
+
+    private fun setupNavigationMenu() {
+        router.attachToDefaultRoute(binding.mainPageNavigation)
     }
 
     override fun onDestroy() {
