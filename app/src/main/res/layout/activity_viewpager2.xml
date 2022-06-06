@@ -29,7 +29,7 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.viewpager.widget.ViewPager
+        <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpager2_container_view"
             android:layout_width="250dp"
             android:layout_height="250dp"
@@ -42,7 +42,7 @@
 
         <ScrollView
             android:id="@+id/viewpager2_app_scrollview"
-            android:layout_width="409dp"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="8dp"
             android:clipChildren="false"

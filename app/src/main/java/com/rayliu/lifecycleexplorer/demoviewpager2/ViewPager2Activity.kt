@@ -3,9 +3,12 @@ package com.rayliu.lifecycleexplorer.demoviewpager2
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.lifecycle.LifecycleOwner
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.rayliu.lifecycleexplorer.R
 import com.rayliu.lifecycleexplorer.cards.CardsFragment
 import com.rayliu.lifecycleexplorer.cards.FragmentLifecycleCallback
@@ -31,11 +34,13 @@ class ViewPager2Activity : AppCompatActivity(), View.OnClickListener, FragmentLi
 
         setSupportActionBar(binding.viewpager2AppBarToolbar)
         setupNavigationMenu()
-//        setupViewPager()
-//
-//        cleanUpText()
-//
-//        binding.viewpagerCleanUp.setOnClickListener(this)
+        binding.viewpager2CleanUp.setOnClickListener(this)
+
+        cleanUpText()
+        
+        binding.viewpager2ContainerView.doOnLayout {
+            setupViewPager()
+        }
     }
 
     private fun setupNavigationMenu() {
@@ -45,13 +50,14 @@ class ViewPager2Activity : AppCompatActivity(), View.OnClickListener, FragmentLi
     private fun setupViewPager() {
         binding.viewpager2ContainerView.adapter = ViewPagerStatePagerAdapter(
             fragmentManager = supportFragmentManager,
+            lifecycleOwner = this,
             maxSize = 5,
             callback = this
         )
     }
 
     private fun cleanUpText() {
-        binding.viewpager2ResponseTextview.text = "FragmentStatePagerAdapter: BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT"
+        binding.viewpager2ResponseTextview.text = "FragmentStateAdapter(fm, lifecycle)"
     }
 
     //region FragmentLifecycleCallback
@@ -62,7 +68,7 @@ class ViewPager2Activity : AppCompatActivity(), View.OnClickListener, FragmentLi
 
     //region View.OnClickListener
     override fun onClick(view: View) {
-        if (view.id == R.id.viewpager_clean_up) {
+        if (view.id == R.id.viewpager2_clean_up) {
             cleanUpText()
         }
     }
@@ -70,14 +76,15 @@ class ViewPager2Activity : AppCompatActivity(), View.OnClickListener, FragmentLi
 
     class ViewPagerStatePagerAdapter(
         fragmentManager: FragmentManager,
+        lifecycleOwner: LifecycleOwner,
         private val maxSize: Int,
         private val callback: FragmentLifecycleCallback
-    ) : FragmentStatePagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-        override fun getCount(): Int {
+    ) : FragmentStateAdapter(fragmentManager, lifecycleOwner.lifecycle) {
+        override fun getItemCount(): Int {
             return maxSize
         }
 
-        override fun getItem(position: Int): Fragment {
+        override fun createFragment(position: Int): Fragment {
             val title = CardGenerators.generateFragmentTag(position) ?: "NA"
             val fragment = CardsFragment.newInstance(
                 title = title,
