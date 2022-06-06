@@ -2,7 +2,7 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_drawer_layout"
+    android:id="@+id/viewpager2_drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -10,50 +10,39 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        android:layout_height="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/main_app_bar_layout"
+            android:id="@+id/viewpager2_app_bar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:clipChildren="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/main_app_bar_toolbar"
+                android:id="@+id/viewpager2_app_bar_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/main_fragment_container_view"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewpager2_container_view"
             android:layout_width="250dp"
             android:layout_height="250dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="160dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/main_app_bar_layout"
-            tools:background="#F7CC5E" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/main_fragment_replace_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Replace"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/main_fragment_container_view"
-            app:layout_constraintTop_toTopOf="@+id/main_fragment_container_view" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/viewpager2_app_bar_layout"
+            tools:background="#F7CC5E" />
 
         <ScrollView
-            android:id="@+id/main_app_scrollview"
-            android:layout_width="409dp"
+            android:id="@+id/viewpager2_app_scrollview"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="8dp"
             android:clipChildren="false"
@@ -63,10 +52,10 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/main_fragment_container_view">
+            app:layout_constraintTop_toBottomOf="@+id/viewpager2_clean_up">
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/main_response_textview"
+                android:id="@+id/viewpager2_response_textview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -76,18 +65,19 @@
         </ScrollView>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/main_fragment_clean_button"
+            android:id="@+id/viewpager2_clean_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Clean"
+            android:text="Clean Up"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/main_fragment_container_view"
-            app:layout_constraintTop_toBottomOf="@+id/main_fragment_replace_button" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/viewpager2_container_view" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
-         android:id="@+id/main_page_navigation"
+         android:id="@+id/viewpager2_navigation"
          android:layout_width="wrap_content"
          android:layout_height="match_parent"
          android:layout_gravity="start"

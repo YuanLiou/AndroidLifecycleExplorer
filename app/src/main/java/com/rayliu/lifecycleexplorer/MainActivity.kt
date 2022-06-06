@@ -6,11 +6,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import com.rayliu.lifecycleexplorer.cards.CardFragmentFactory
 import com.rayliu.lifecycleexplorer.cards.CardsFragment
+import com.rayliu.lifecycleexplorer.cards.CardsFragment.Companion.COLOR_KEY
 import com.rayliu.lifecycleexplorer.cards.FragmentLifecycleCallback
 import com.rayliu.lifecycleexplorer.databinding.ActivityMainBinding
 import com.rayliu.lifecycleexplorer.utils.CardGenerators
+import com.rayliu.lifecycleexplorer.utils.DrawerRouter
+import com.rayliu.lifecycleexplorer.utils.printLogs
 
 class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycleCallback {
+
+    private val router: DrawerRouter by lazy(LazyThreadSafetyMode.NONE) {
+        DrawerRouter(this)
+    }
 
     private var _binding: ActivityMainBinding? = null
     private val binding: ActivityMainBinding
@@ -30,6 +37,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycl
 
         binding.mainFragmentReplaceButton.setOnClickListener(this)
         binding.mainFragmentCleanButton.setOnClickListener(this)
+        setupNavigationMenu()
+    }
+
+    private fun setupNavigationMenu() {
+        router.attachToDefaultRoute(binding.mainPageNavigation, R.id.action_fragment_lifecycle)
     }
 
     override fun onDestroy() {
@@ -58,8 +70,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycl
         ft.replace(
             R.id.main_fragment_container_view, CardsFragment::class.java,
             bundleOf(
-                "title" to id,
-                "colorRes" to CardGenerators.generateRandomColorRes()
+                CardsFragment.TITLE_KEY to id,
+                CardsFragment.COLOR_KEY to CardGenerators.generateRandomColorRes()
             )
         )
         previousId?.let { ft.addToBackStack(it) }
@@ -82,13 +94,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycl
     }
 
     private fun printLog(id: String, message: String) {
-        val messageTextView = binding.mainResponseTextview
-        val currentLogMessage = messageTextView.text.toString()
-        if (currentLogMessage.isEmpty()) {
-            messageTextView.text = id + ": " + message
-        } else {
-            messageTextView.text = currentLogMessage + "\n" + id + ": " + message
-        }
+        binding.mainResponseTextview.printLogs(id, message)
     }
 
     //region FragmentLifecycleCallback
