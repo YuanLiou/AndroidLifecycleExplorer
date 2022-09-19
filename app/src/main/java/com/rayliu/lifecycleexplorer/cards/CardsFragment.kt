@@ -30,6 +30,11 @@ class CardsFragment(
         callback?.onFragmentEventCallback(title, "onAttach()")
     }
 
+    override fun onGetLayoutInflater(savedInstanceState: Bundle?): LayoutInflater {
+        callback?.onFragmentEventCallback(cardId, "onGetLayoutInflater()")
+        return super.onGetLayoutInflater(savedInstanceState)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
