@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "LifecycleExplorer"
-include ':app'
+include(":app")
