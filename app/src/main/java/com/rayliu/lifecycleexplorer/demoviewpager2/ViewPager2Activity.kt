@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.rayliu.lifecycleexplorer.R
@@ -39,7 +38,7 @@ class ViewPager2Activity : AppCompatActivity(), View.OnClickListener, FragmentLi
         binding.viewpager2CleanUp.setOnClickListener(this)
 
         cleanUpText()
-        
+
         binding.viewpager2ContainerView.doOnLayout {
             setupViewPager()
         }
@@ -49,7 +48,6 @@ class ViewPager2Activity : AppCompatActivity(), View.OnClickListener, FragmentLi
         super.onDestroy()
         _binding = null
     }
-
 
     private fun syncMenuWithToolbar() {
         binding.viewpager2DrawerLayout.syncMenuWithToolbar(this, binding.viewpager2AppBarToolbar)

@@ -3,6 +3,7 @@ plugins {
     id("com.android.application") version AgpVersion apply false
     id("com.android.library") version AgpVersion apply false
     id("org.jetbrains.kotlin.android") version KotlinVersion apply false
+    id("org.jmailen.kotlinter") version KtlinterVersion apply false
 }
 
 tasks.register<Delete>("clean").configure {
