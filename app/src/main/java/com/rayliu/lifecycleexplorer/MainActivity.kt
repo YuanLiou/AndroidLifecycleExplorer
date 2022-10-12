@@ -2,7 +2,6 @@ package com.rayliu.lifecycleexplorer
 
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import com.rayliu.lifecycleexplorer.cards.CardFragmentFactory
@@ -75,7 +74,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycl
 
         val ft = supportFragmentManager.beginTransaction()
         ft.replace(
-            R.id.main_fragment_container_view, CardsFragment::class.java,
+            R.id.main_fragment_container_view,
+            CardsFragment::class.java,
             bundleOf(
                 CardsFragment.TITLE_KEY to id,
                 CardsFragment.COLOR_KEY to CardGenerators.generateRandomColorRes()

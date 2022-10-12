@@ -20,7 +20,7 @@ class DrawerRouter(
                 if (item.itemId == disableId) {
                     return false
                 }
-                
+
                 when (item.itemId) {
                     R.id.action_fragment_lifecycle -> {
                         val intent = Intent(currentActivity, MainActivity::class.java)
