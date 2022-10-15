@@ -1,0 +1,20 @@
+name: PR Lint Check
+
+on:
+  pull_request:
+
+jobs:
+  lint_check:
+    name: Check Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: '1'
+      - name: Ktlint
+        uses: ScaCap/action-ktlint@master
+        with:
+          android: true
+          github_token: ${{ secrets.github_token }}
+          reporter: github-pr-review
