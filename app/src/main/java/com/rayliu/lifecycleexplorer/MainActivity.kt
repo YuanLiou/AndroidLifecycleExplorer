@@ -1,20 +1,27 @@
 package com.rayliu.lifecycleexplorer
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.rayliu.lifecycleexplorer.cards.CardFragmentFactory
 import com.rayliu.lifecycleexplorer.cards.CardsFragment
 import com.rayliu.lifecycleexplorer.cards.CardsFragment.Companion.COLOR_KEY
 import com.rayliu.lifecycleexplorer.cards.FragmentLifecycleCallback
+import com.rayliu.lifecycleexplorer.cards.LifecycleLog
 import com.rayliu.lifecycleexplorer.databinding.ActivityMainBinding
 import com.rayliu.lifecycleexplorer.fragment.FragmentLifecycleViewModel
+import com.rayliu.lifecycleexplorer.fragment.FragmentLifecycleViewState
 import com.rayliu.lifecycleexplorer.utils.CardGenerators
 import com.rayliu.lifecycleexplorer.utils.DrawerRouter
-import com.rayliu.lifecycleexplorer.utils.printLogs
 import com.rayliu.lifecycleexplorer.utils.syncMenuWithToolbar
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycleCallback {
 
@@ -36,6 +43,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycl
 
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collectLatest { viewState ->
+                    when (viewState) {
+                        is FragmentLifecycleViewState.LifecycleUpdate -> {
+                            printLog(viewState.id, viewState.message)
+                        }
+                        FragmentLifecycleViewState.RESET -> {
+                            cleanLogTexts()
+                        }
+                    }
+                }
+            }
+        }
+
         setSupportActionBar(binding.mainAppBarToolbar)
         syncMenuWithToolbar()
 
@@ -71,11 +93,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycl
     }
 
     private fun populateNewCards() {
-        val id = CardGenerators.generateFragmentTag(currentIndex++)
-        if (id == null) {
-            return
-        }
-
+        val id = CardGenerators.generateFragmentTag(currentIndex++) ?: return
         val ft = supportFragmentManager.beginTransaction()
         ft.replace(
             R.id.main_fragment_container_view,
@@ -107,12 +125,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycl
 
     private fun printLog(id: String, message: String) {
         // TODO: print Logs
+        Log.w("MainActivity", "id = $id, message = $message")
     }
     //endregion
 
     //region FragmentLifecycleCallback
-    override fun onFragmentEventCallback(id: String, message: String) {
-        printLog(id, message)
+    override fun onFragmentEventCallback(lifecycleLog: LifecycleLog) {
+        viewModel.updateLifecycleLog(lifecycleLog)
     }
     //endregion
 }

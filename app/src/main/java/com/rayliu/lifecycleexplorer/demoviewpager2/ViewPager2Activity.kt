@@ -11,6 +11,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.rayliu.lifecycleexplorer.R
 import com.rayliu.lifecycleexplorer.cards.CardsFragment
 import com.rayliu.lifecycleexplorer.cards.FragmentLifecycleCallback
+import com.rayliu.lifecycleexplorer.cards.LifecycleLog
 import com.rayliu.lifecycleexplorer.databinding.ActivityViewpager2Binding
 import com.rayliu.lifecycleexplorer.utils.CardGenerators
 import com.rayliu.lifecycleexplorer.utils.DrawerRouter
@@ -71,8 +72,8 @@ class ViewPager2Activity : AppCompatActivity(), View.OnClickListener, FragmentLi
     }
 
     //region FragmentLifecycleCallback
-    override fun onFragmentEventCallback(id: String, message: String) {
-        binding.viewpager2ResponseTextview.printLogs(id, message)
+    override fun onFragmentEventCallback(lifecycleLog: LifecycleLog) {
+        binding.viewpager2ResponseTextview.printLogs(lifecycleLog.id, lifecycleLog.message)
     }
     //endregion
 

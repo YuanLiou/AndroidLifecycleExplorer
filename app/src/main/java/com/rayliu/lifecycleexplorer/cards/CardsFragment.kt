@@ -113,7 +113,7 @@ class CardsFragment(
     }
 
     private fun sendCallbackEvent(id: String = cardId, message: String) {
-        callback?.onFragmentEventCallback(id, message)
+        callback?.onFragmentEventCallback(LifecycleLog(id, message))
     }
 
     companion object {
