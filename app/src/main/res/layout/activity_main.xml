@@ -52,29 +52,7 @@
             app:layout_constraintStart_toEndOf="@+id/main_fragment_container_view"
             app:layout_constraintTop_toTopOf="@+id/main_fragment_container_view" />
 
-        <ScrollView
-            android:id="@+id/main_app_scrollview"
-            android:layout_width="409dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="8dp"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/main_fragment_container_view">
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/main_response_textview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:textIsSelectable="true"
-                android:textSize="22sp"
-                tools:text="@tools:sample/cities" />
-        </ScrollView>
+        <!-- TODO: Replace compose view here -->
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/main_fragment_clean_button"

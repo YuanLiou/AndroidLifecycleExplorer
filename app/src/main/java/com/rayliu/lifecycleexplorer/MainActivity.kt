@@ -2,6 +2,7 @@ package com.rayliu.lifecycleexplorer
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import com.rayliu.lifecycleexplorer.cards.CardFragmentFactory
@@ -9,12 +10,15 @@ import com.rayliu.lifecycleexplorer.cards.CardsFragment
 import com.rayliu.lifecycleexplorer.cards.CardsFragment.Companion.COLOR_KEY
 import com.rayliu.lifecycleexplorer.cards.FragmentLifecycleCallback
 import com.rayliu.lifecycleexplorer.databinding.ActivityMainBinding
+import com.rayliu.lifecycleexplorer.fragment.FragmentLifecycleViewModel
 import com.rayliu.lifecycleexplorer.utils.CardGenerators
 import com.rayliu.lifecycleexplorer.utils.DrawerRouter
 import com.rayliu.lifecycleexplorer.utils.printLogs
 import com.rayliu.lifecycleexplorer.utils.syncMenuWithToolbar
 
 class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycleCallback {
+
+    private val viewModel: FragmentLifecycleViewModel by viewModels()
 
     private val router: DrawerRouter by lazy(LazyThreadSafetyMode.NONE) {
         DrawerRouter(this)
@@ -87,10 +91,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycl
         previousId = id
     }
 
-    private fun cleanLogTexts() {
-        binding.mainResponseTextview.text = ""
-    }
-
     override fun onNavigateUp(): Boolean {
         val fragmentManager = supportFragmentManager
         if (fragmentManager.backStackEntryCount > 0) {
@@ -100,9 +100,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycl
         return super.onNavigateUp()
     }
 
-    private fun printLog(id: String, message: String) {
-        binding.mainResponseTextview.printLogs(id, message)
+    //region Callback Actions
+    private fun cleanLogTexts() {
+        // TODO: clean Logs
     }
+
+    private fun printLog(id: String, message: String) {
+        // TODO: print Logs
+    }
+    //endregion
 
     //region FragmentLifecycleCallback
     override fun onFragmentEventCallback(id: String, message: String) {

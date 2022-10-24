@@ -27,11 +27,11 @@ class CardsFragment(
         }
         this.cardId = title
 
-        callback?.onFragmentEventCallback(title, "onAttach()")
+        sendCallbackEvent(message = "onAttach()")
     }
 
     override fun onGetLayoutInflater(savedInstanceState: Bundle?): LayoutInflater {
-        callback?.onFragmentEventCallback(cardId, "onGetLayoutInflater()")
+        sendCallbackEvent(message = "onGetLayoutInflater()")
         return super.onGetLayoutInflater(savedInstanceState)
     }
 
@@ -40,13 +40,13 @@ class CardsFragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        callback?.onFragmentEventCallback(cardId, "onCreateView()")
+        sendCallbackEvent(cardId, "onCreateView()")
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        callback?.onFragmentEventCallback(cardId, "onViewCreated()")
+        sendCallbackEvent(message = "onViewCreated()")
         retrieveViews(view)
     }
 
@@ -64,52 +64,56 @@ class CardsFragment(
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        callback?.onFragmentEventCallback(cardId, "onActivityCreated()")
+        sendCallbackEvent(message = "onActivityCreated()")
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        callback?.onFragmentEventCallback(cardId, "onViewStateRestored()")
+        sendCallbackEvent(message = "onViewStateRestored()")
     }
 
     override fun onStart() {
         super.onStart()
-        callback?.onFragmentEventCallback(cardId, "onStart()")
+        sendCallbackEvent(message = "onStart()")
     }
 
     override fun onResume() {
         super.onResume()
-        callback?.onFragmentEventCallback(cardId, "onResume()")
+        sendCallbackEvent(message = "onResume()")
     }
 
     override fun onPause() {
         super.onPause()
-        callback?.onFragmentEventCallback(cardId, "onPause()")
+        sendCallbackEvent(message = "onPause()")
     }
 
     override fun onStop() {
         super.onStop()
-        callback?.onFragmentEventCallback(cardId, "onStop()")
+        sendCallbackEvent(message = "onStop()")
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        callback?.onFragmentEventCallback(cardId, "onDestroyView()")
+        sendCallbackEvent(message = "onDestroyView()")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        callback?.onFragmentEventCallback(cardId, "onDestroy()")
+        sendCallbackEvent(message = "onDestroy()")
     }
 
     override fun onDetach() {
         super.onDetach()
-        callback?.onFragmentEventCallback(cardId, "onDetach()")
+        sendCallbackEvent(message = "onDetach()")
         callback = null
     }
 
     fun setFragmentLifecycleCallback(callback: FragmentLifecycleCallback) {
         this.callback = callback
+    }
+
+    private fun sendCallbackEvent(id: String = cardId, message: String) {
+        callback?.onFragmentEventCallback(id, message)
     }
 
     companion object {
