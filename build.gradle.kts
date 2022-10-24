@@ -6,6 +6,12 @@ plugins {
     id("org.jmailen.kotlinter") version KtlinterVersion apply false
 }
 
+buildscript {
+    dependencies {
+        classpath("com.twitter.compose.rules:ktlint:$ComposeLintVersion")
+    }
+}
+
 tasks.register<Delete>("clean").configure {
     delete(rootProject.buildDir)
 }

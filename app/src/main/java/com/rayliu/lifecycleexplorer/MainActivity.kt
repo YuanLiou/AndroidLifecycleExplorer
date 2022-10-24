@@ -2,19 +2,28 @@ package com.rayliu.lifecycleexplorer
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.os.bundleOf
 import com.rayliu.lifecycleexplorer.cards.CardFragmentFactory
 import com.rayliu.lifecycleexplorer.cards.CardsFragment
 import com.rayliu.lifecycleexplorer.cards.CardsFragment.Companion.COLOR_KEY
 import com.rayliu.lifecycleexplorer.cards.FragmentLifecycleCallback
+import com.rayliu.lifecycleexplorer.cards.LifecycleLog
+import com.rayliu.lifecycleexplorer.cards.LifecycleLoggerList
 import com.rayliu.lifecycleexplorer.databinding.ActivityMainBinding
+import com.rayliu.lifecycleexplorer.fragment.FragmentLifecycleViewModel
+import com.rayliu.lifecycleexplorer.fragment.FragmentLifecycleViewState
 import com.rayliu.lifecycleexplorer.utils.CardGenerators
 import com.rayliu.lifecycleexplorer.utils.DrawerRouter
-import com.rayliu.lifecycleexplorer.utils.printLogs
 import com.rayliu.lifecycleexplorer.utils.syncMenuWithToolbar
 
 class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycleCallback {
+
+    private val viewModel: FragmentLifecycleViewModel by viewModels()
 
     private val router: DrawerRouter by lazy(LazyThreadSafetyMode.NONE) {
         DrawerRouter(this)
@@ -32,6 +41,23 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycl
 
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.composeView.apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                MaterialTheme {
+                    val uiState = viewModel.uiState.collectAsState()
+                    when (val viewState = uiState.value) {
+                        is FragmentLifecycleViewState.LifecycleUpdate -> {
+                            LifecycleLoggerList(viewState.logs)
+                        }
+                        FragmentLifecycleViewState.RESET -> {
+                            LifecycleLoggerList(emptyList())
+                        }
+                    }
+                }
+            }
+        }
+
         setSupportActionBar(binding.mainAppBarToolbar)
         syncMenuWithToolbar()
 
@@ -61,17 +87,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycl
                 populateNewCards()
             }
             R.id.main_fragment_clean_button -> {
-                cleanLogTexts()
+                viewModel.clearLogs()
             }
         }
     }
 
     private fun populateNewCards() {
-        val id = CardGenerators.generateFragmentTag(currentIndex++)
-        if (id == null) {
-            return
-        }
-
+        val id = CardGenerators.generateFragmentTag(currentIndex++) ?: return
         val ft = supportFragmentManager.beginTransaction()
         ft.replace(
             R.id.main_fragment_container_view,
@@ -87,10 +109,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycl
         previousId = id
     }
 
-    private fun cleanLogTexts() {
-        binding.mainResponseTextview.text = ""
-    }
-
     override fun onNavigateUp(): Boolean {
         val fragmentManager = supportFragmentManager
         if (fragmentManager.backStackEntryCount > 0) {
@@ -100,13 +118,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycl
         return super.onNavigateUp()
     }
 
-    private fun printLog(id: String, message: String) {
-        binding.mainResponseTextview.printLogs(id, message)
-    }
-
     //region FragmentLifecycleCallback
-    override fun onFragmentEventCallback(id: String, message: String) {
-        printLog(id, message)
+    override fun onFragmentEventCallback(lifecycleLog: LifecycleLog) {
+        viewModel.updateLifecycleLog(lifecycleLog)
     }
     //endregion
 }

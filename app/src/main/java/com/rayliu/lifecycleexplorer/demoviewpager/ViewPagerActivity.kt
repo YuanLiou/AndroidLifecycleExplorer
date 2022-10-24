@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import com.rayliu.lifecycleexplorer.R
 import com.rayliu.lifecycleexplorer.cards.CardsFragment
 import com.rayliu.lifecycleexplorer.cards.FragmentLifecycleCallback
+import com.rayliu.lifecycleexplorer.cards.LifecycleLog
 import com.rayliu.lifecycleexplorer.databinding.ActivityViewpagerBinding
 import com.rayliu.lifecycleexplorer.utils.CardGenerators
 import com.rayliu.lifecycleexplorer.utils.DrawerRouter
@@ -66,8 +67,8 @@ class ViewPagerActivity : AppCompatActivity(), View.OnClickListener, FragmentLif
     }
 
     //region FragmentLifecycleCallback
-    override fun onFragmentEventCallback(id: String, message: String) {
-        binding.viewpagerResponseTextview.printLogs(id, message)
+    override fun onFragmentEventCallback(lifecycleLog: LifecycleLog) {
+        binding.viewpagerResponseTextview.printLogs(lifecycleLog.id, lifecycleLog.message)
     }
     //endregion
 

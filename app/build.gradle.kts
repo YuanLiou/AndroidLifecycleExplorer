@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId = "com.rayliu.lifecycleexplorer"
         minSdk = 21
-        targetSdk = 32
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
@@ -28,11 +28,15 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = ComposeCompilerVersion
+    }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_11.toString()
     }
     buildFeatures {
         viewBinding = true
+        compose = true
     }
 }
 
@@ -45,6 +49,10 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.viewpager:viewpager:1.0.0")
     implementation("androidx.viewpager2:viewpager2:1.0.0")
+    implementation("androidx.compose.material3:material3:1.0.0-rc01")
+    implementation("androidx.activity:activity-compose:1.6.0")
+    implementation("androidx.compose.ui:ui-tooling:1.2.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0-alpha02")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
