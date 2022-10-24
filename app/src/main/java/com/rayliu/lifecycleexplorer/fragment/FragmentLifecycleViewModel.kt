@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.stateIn
 
 class FragmentLifecycleViewModel : ViewModel() {
 
+    private val lifecycleLogs = mutableListOf<LifecycleLog>()
     private val _lifecycleUpdateEvent =
         MutableStateFlow<FragmentLifecycleViewState>(FragmentLifecycleViewState.RESET)
     val uiState: StateFlow<FragmentLifecycleViewState>
@@ -20,9 +21,13 @@ class FragmentLifecycleViewModel : ViewModel() {
         )
 
     fun updateLifecycleLog(lifecycleLog: LifecycleLog) {
-        _lifecycleUpdateEvent.value = FragmentLifecycleViewState.LifecycleUpdate(
-            lifecycleLog.id,
-            lifecycleLog.message
-        )
+        lifecycleLogs.add(lifecycleLog)
+        _lifecycleUpdateEvent.value =
+            FragmentLifecycleViewState.LifecycleUpdate(lifecycleLogs.toList())
+    }
+
+    fun clearLogs() {
+        lifecycleLogs.clear()
+        _lifecycleUpdateEvent.value = FragmentLifecycleViewState.RESET
     }
 }

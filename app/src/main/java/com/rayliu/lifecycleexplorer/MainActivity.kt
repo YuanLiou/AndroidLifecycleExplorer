@@ -1,27 +1,21 @@
 package com.rayliu.lifecycleexplorer
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.os.bundleOf
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import com.rayliu.lifecycleexplorer.cards.CardFragmentFactory
-import com.rayliu.lifecycleexplorer.cards.CardsFragment
+import com.rayliu.lifecycleexplorer.cards.*
 import com.rayliu.lifecycleexplorer.cards.CardsFragment.Companion.COLOR_KEY
-import com.rayliu.lifecycleexplorer.cards.FragmentLifecycleCallback
-import com.rayliu.lifecycleexplorer.cards.LifecycleLog
 import com.rayliu.lifecycleexplorer.databinding.ActivityMainBinding
 import com.rayliu.lifecycleexplorer.fragment.FragmentLifecycleViewModel
 import com.rayliu.lifecycleexplorer.fragment.FragmentLifecycleViewState
 import com.rayliu.lifecycleexplorer.utils.CardGenerators
 import com.rayliu.lifecycleexplorer.utils.DrawerRouter
 import com.rayliu.lifecycleexplorer.utils.syncMenuWithToolbar
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycleCallback {
 
@@ -43,15 +37,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycl
 
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collectLatest { viewState ->
-                    when (viewState) {
+        binding.composeView.apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                MaterialTheme {
+                    val uiState = viewModel.uiState.collectAsState()
+                    when (val viewState = uiState.value) {
                         is FragmentLifecycleViewState.LifecycleUpdate -> {
-                            printLog(viewState.id, viewState.message)
+                            LifecycleLoggerList(viewState.logs)
                         }
                         FragmentLifecycleViewState.RESET -> {
-                            cleanLogTexts()
+                            LifecycleLoggerList(emptyList())
                         }
                     }
                 }
@@ -87,7 +83,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycl
                 populateNewCards()
             }
             R.id.main_fragment_clean_button -> {
-                cleanLogTexts()
+                viewModel.clearLogs()
             }
         }
     }
@@ -117,17 +113,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycl
         }
         return super.onNavigateUp()
     }
-
-    //region Callback Actions
-    private fun cleanLogTexts() {
-        // TODO: clean Logs
-    }
-
-    private fun printLog(id: String, message: String) {
-        // TODO: print Logs
-        Log.w("MainActivity", "id = $id, message = $message")
-    }
-    //endregion
 
     //region FragmentLifecycleCallback
     override fun onFragmentEventCallback(lifecycleLog: LifecycleLog) {
