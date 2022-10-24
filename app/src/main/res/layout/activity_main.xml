@@ -52,7 +52,15 @@
             app:layout_constraintStart_toEndOf="@+id/main_fragment_container_view"
             app:layout_constraintTop_toTopOf="@+id/main_fragment_container_view" />
 
-        <!-- TODO: Replace compose view here -->
+        <androidx.compose.ui.platform.ComposeView
+            android:id="@+id/compose_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/main_fragment_container_view"
+            />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/main_fragment_clean_button"
