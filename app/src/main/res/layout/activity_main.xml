@@ -39,7 +39,8 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/main_app_bar_layout"
-            tools:background="#F7CC5E" />
+            tools:background="#F7CC5E"
+            tools:layout="@layout/fragment_cards" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/main_fragment_replace_button"
