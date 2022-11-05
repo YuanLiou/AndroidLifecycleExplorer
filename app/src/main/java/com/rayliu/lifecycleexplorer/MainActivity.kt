@@ -10,7 +10,6 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.os.bundleOf
 import com.rayliu.lifecycleexplorer.cards.CardFragmentFactory
 import com.rayliu.lifecycleexplorer.cards.CardsFragment
-import com.rayliu.lifecycleexplorer.cards.CardsFragment.Companion.COLOR_KEY
 import com.rayliu.lifecycleexplorer.cards.FragmentLifecycleCallback
 import com.rayliu.lifecycleexplorer.cards.LifecycleLog
 import com.rayliu.lifecycleexplorer.cards.LifecycleLoggerList

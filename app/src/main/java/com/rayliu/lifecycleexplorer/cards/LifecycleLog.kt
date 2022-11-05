@@ -1,3 +1,9 @@
 package com.rayliu.lifecycleexplorer.cards
 
-data class LifecycleLog(val id: String, val message: String)
+import com.rayliu.lifecycleexplorer.R
+
+data class LifecycleLog(
+    val id: String,
+    val message: String,
+    val colorBackgroundResId: Int = R.color.white
+)

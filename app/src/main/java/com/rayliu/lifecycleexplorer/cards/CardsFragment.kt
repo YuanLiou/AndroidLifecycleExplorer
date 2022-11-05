@@ -5,19 +5,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.rayliu.lifecycleexplorer.R
+import com.rayliu.lifecycleexplorer.databinding.FragmentCardsBinding
 
 class CardsFragment(
     private var callback: FragmentLifecycleCallback? = null
 ) : Fragment(R.layout.fragment_cards) {
 
+    private var _binding: FragmentCardsBinding? = null
+    private val binding: FragmentCardsBinding
+        get() = _binding!!
+
     private var cardId: String = "Not init yet"
+    private var cardBackgroundResId: Int = R.color.white
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -26,6 +30,12 @@ class CardsFragment(
             "title is null"
         }
         this.cardId = title
+
+        val colorRes = requireArguments().getInt(COLOR_KEY, -1)
+        require(colorRes != -1) {
+            "colorRes is not set"
+        }
+        this.cardBackgroundResId = colorRes
 
         sendCallbackEvent(message = "onAttach()")
     }
@@ -46,20 +56,19 @@ class CardsFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentCardsBinding.bind(view)
         sendCallbackEvent(message = "onViewCreated()")
-        retrieveViews(view)
+        retrieveViews()
     }
 
-    private fun retrieveViews(view: View) {
-        val titleTextView: TextView = view.findViewById(R.id.cards_text_view)
-        val cardRootView: FrameLayout = view.findViewById(R.id.cards_root_view)
-
-        val colorRes = requireArguments().getInt(COLOR_KEY, -1)
-        require(colorRes != -1) {
-            "colorRes is not set"
-        }
-        titleTextView.text = cardId
-        cardRootView.setBackgroundColor(ContextCompat.getColor(requireContext(), colorRes))
+    private fun retrieveViews() {
+        binding.cardsTextView.text = cardId
+        binding.cardsRootView.setBackgroundColor(
+            ContextCompat.getColor(
+                requireContext(),
+                cardBackgroundResId
+            )
+        )
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -95,6 +104,7 @@ class CardsFragment(
     override fun onDestroyView() {
         super.onDestroyView()
         sendCallbackEvent(message = "onDestroyView()")
+        _binding = null
     }
 
     override fun onDestroy() {
@@ -113,7 +123,7 @@ class CardsFragment(
     }
 
     private fun sendCallbackEvent(id: String = cardId, message: String) {
-        callback?.onFragmentEventCallback(LifecycleLog(id, message))
+        callback?.onFragmentEventCallback(LifecycleLog(id, message, cardBackgroundResId))
     }
 
     companion object {
