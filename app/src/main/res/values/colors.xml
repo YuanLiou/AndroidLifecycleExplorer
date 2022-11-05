@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
+    <color name="loblolly">#BCC2CA</color>
     <color name="white">#FFFFFFFF</color>
     <color name="lemon_meringue">#F4E2C4</color>
     <color name="desert_sand">#EFCBB6</color>

@@ -14,6 +14,7 @@ import com.rayliu.lifecycleexplorer.cards.FragmentLifecycleCallback
 import com.rayliu.lifecycleexplorer.cards.LifecycleLog
 import com.rayliu.lifecycleexplorer.cards.LifecycleLoggerList
 import com.rayliu.lifecycleexplorer.databinding.ActivityMainBinding
+import com.rayliu.lifecycleexplorer.fragment.FragmentLifecycleScreen
 import com.rayliu.lifecycleexplorer.fragment.FragmentLifecycleViewModel
 import com.rayliu.lifecycleexplorer.fragment.FragmentLifecycleViewState
 import com.rayliu.lifecycleexplorer.utils.CardGenerators
@@ -43,17 +44,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycl
         binding.composeView.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                MaterialTheme {
-                    val uiState = viewModel.uiState.collectAsState()
-                    when (val viewState = uiState.value) {
-                        is FragmentLifecycleViewState.LifecycleUpdate -> {
-                            LifecycleLoggerList(viewState.logs)
-                        }
-                        FragmentLifecycleViewState.RESET -> {
-                            LifecycleLoggerList(emptyList())
-                        }
-                    }
-                }
+                FragmentLifecycleScreen(viewModel)
             }
         }
 
