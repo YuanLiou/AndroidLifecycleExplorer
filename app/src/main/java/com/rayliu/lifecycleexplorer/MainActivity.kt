@@ -10,11 +10,11 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.os.bundleOf
 import com.rayliu.lifecycleexplorer.cards.CardFragmentFactory
 import com.rayliu.lifecycleexplorer.cards.CardsFragment
-import com.rayliu.lifecycleexplorer.cards.CardsFragment.Companion.COLOR_KEY
 import com.rayliu.lifecycleexplorer.cards.FragmentLifecycleCallback
 import com.rayliu.lifecycleexplorer.cards.LifecycleLog
 import com.rayliu.lifecycleexplorer.cards.LifecycleLoggerList
 import com.rayliu.lifecycleexplorer.databinding.ActivityMainBinding
+import com.rayliu.lifecycleexplorer.fragment.FragmentLifecycleScreen
 import com.rayliu.lifecycleexplorer.fragment.FragmentLifecycleViewModel
 import com.rayliu.lifecycleexplorer.fragment.FragmentLifecycleViewState
 import com.rayliu.lifecycleexplorer.utils.CardGenerators
@@ -44,17 +44,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, FragmentLifecycl
         binding.composeView.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                MaterialTheme {
-                    val uiState = viewModel.uiState.collectAsState()
-                    when (val viewState = uiState.value) {
-                        is FragmentLifecycleViewState.LifecycleUpdate -> {
-                            LifecycleLoggerList(viewState.logs)
-                        }
-                        FragmentLifecycleViewState.RESET -> {
-                            LifecycleLoggerList(emptyList())
-                        }
-                    }
-                }
+                FragmentLifecycleScreen(viewModel)
             }
         }
 
