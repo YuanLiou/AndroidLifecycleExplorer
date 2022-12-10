@@ -5,4 +5,4 @@ val ComposeCompilerVersion = "1.3.2"
 
 // Lint
 val KtlinterVersion = "3.12.0"
-val ComposeLintVersion = "0.0.20"
+val ComposeLintVersion = "0.0.26"
