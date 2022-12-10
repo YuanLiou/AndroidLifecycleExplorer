@@ -18,6 +18,7 @@ import com.rayliu.lifecycleexplorer.R
 
 @Composable
 fun LifecycleLoggerList(
+    modifier: Modifier = Modifier,
     logs: List<LifecycleLog> = emptyList()
 ) {
     LazyColumn {
@@ -33,8 +34,9 @@ fun LifecycleLoggerList(
 
 @Composable
 fun LifecycleLoggerItem(
-    title: String = "",
-    @ColorRes colorResId: Int
+    @ColorRes colorResId: Int,
+    modifier: Modifier = Modifier,
+    title: String = ""
 ) {
     Surface(
         color = colorResource(id = colorResId),
@@ -57,7 +59,7 @@ private fun LifecycleLoggerListPreview() {
     MaterialTheme {
         Surface {
             LifecycleLoggerList(
-                listOf(
+                logs = listOf(
                     LifecycleLog("ID01", "Message01"),
                     LifecycleLog("ID02", "Message02"),
                     LifecycleLog("ID03", "Message03")
@@ -72,7 +74,7 @@ private fun LifecycleLoggerListPreview() {
 private fun LifecycleLoggerItemPreview() {
     MaterialTheme {
         Surface {
-            LifecycleLoggerItem("Logger Item Preview", R.color.white)
+            LifecycleLoggerItem(R.color.white, title = "Logger Item Preview")
         }
     }
 }

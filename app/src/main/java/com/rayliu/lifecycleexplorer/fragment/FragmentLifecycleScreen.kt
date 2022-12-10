@@ -3,11 +3,8 @@ package com.rayliu.lifecycleexplorer.fragment
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -19,6 +16,7 @@ import com.rayliu.lifecycleexplorer.cards.LifecycleLoggerList
 
 @Composable
 fun FragmentLifecycleScreen(
+    modifier: Modifier = Modifier,
     viewModel: FragmentLifecycleViewModel
 ) {
     Column(Modifier.fillMaxWidth()) {
@@ -31,10 +29,10 @@ fun FragmentLifecycleScreen(
         val uiState = viewModel.uiState.collectAsState()
         when (val viewState = uiState.value) {
             is FragmentLifecycleViewState.LifecycleUpdate -> {
-                LifecycleLoggerList(viewState.logs)
+                LifecycleLoggerList(logs = viewState.logs)
             }
             FragmentLifecycleViewState.RESET -> {
-                LifecycleLoggerList(emptyList())
+                LifecycleLoggerList(logs = emptyList())
             }
         }
     }
@@ -43,5 +41,5 @@ fun FragmentLifecycleScreen(
 @Preview
 @Composable
 fun FragmentLifecycleScreenPreview() {
-    FragmentLifecycleScreen(FragmentLifecycleViewModel())
+    FragmentLifecycleScreen(viewModel = FragmentLifecycleViewModel())
 }
